@@ -35,3 +35,5 @@ The project creates a web for disaster response in a time of crisis. It builds a
 3. Run the web app: `python run.py`
 
 4. Open a browser and visit the corresponding ip address and port
+
+#### PS: This project was completed as part of the requirement for my Udacity Data Scientist Nanodegree program
