@@ -34,4 +34,4 @@ The project creates a web for disaster response in a time of crisis. It builds a
 
 3. Run the web app: `python run.py`
 
-4. Click the `PREVIEW` button to open the homepage
+4. Open a browser and visit the corresponding ip address and port
