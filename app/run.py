@@ -17,6 +17,9 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 
 class count_unique_words(BaseEstimator, TransformerMixin):
+    """
+    class makes a transformer that returns the count of unique words in each row of the input
+    """
     def fit(self, X, y=None):
         return self
 
@@ -25,6 +28,10 @@ class count_unique_words(BaseEstimator, TransformerMixin):
         return output.reshape(-1,1)
 
 def tokenize(text):
+    """
+    function tokenizes and lemmatizes text
+    (str) -> list of (str)
+    """
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -35,6 +42,11 @@ def tokenize(text):
 
     return clean_tokens
 def getTopNwords(x, ngram_range=(1,1)):
+    """
+    given a pandas series x containing rows of strings,  function returns each word token based on the given
+    n_gram range with stopwords removed
+    (pd.series, tuple) -> df
+    """
     vec = CountVectorizer(ngram_range = ngram_range, stop_words="english").fit(x)
     bow = vec.transform(x)
     sumWords = bow.sum(axis = 0)
