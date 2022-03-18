@@ -32,7 +32,7 @@ def clean_data(df1):
         categories[column] = categories[column].apply(lambda x: x[-1])
 
         # convert column from string to numeric
-        categories[column] = categories[column].astype(int)
+        categories[column] = categories[column].astype(int).astype(bool).astype(int)
     df.drop('categories', axis=1, inplace=True)
     df = pd.concat([df,categories], axis =1)
     df = df.drop_duplicates()
