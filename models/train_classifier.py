@@ -20,18 +20,24 @@ nltk.download(['punkt','wordnet','stopwords'])
 from sklearn.base import BaseEstimator, TransformerMixin
 
 class count_unique_words(BaseEstimator, TransformerMixin):
+    """
+    counts the number of unique words in each row of the input
+    this class makes a transformer out of a python function
+    """
     def fit(self, X, y=None):
         return self
 
     def transform(self, X):
-        """
-        counts the number of unique words in ea
-        """
+
         output = pd.Series(X).apply(lambda x: len(set(tokenize(x)))).values
         return output.reshape(-1,1)
 
 
 def load_data(database_filepath):
+    """
+    loads data from the database whose filepath is given as input and returns two dataframes and a list of column names
+    (str) -> df, df, list of (str)
+    """
     engine = create_engine('sqlite:///{}'.format(database_filepath))
     df = pd.read_sql('select * from disaster_df', con = engine)
     X = df.iloc[:,1]
@@ -40,6 +46,10 @@ def load_data(database_filepath):
     return X, Y, category_names
 
 def tokenize(text):
+    """
+    returns a list of lemmatized lowercased tokens from the input text. function also removes punctuations from text
+    (str) -> list of (str)
+    """
     url_regex = 'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+'
 
 
@@ -54,6 +64,9 @@ def tokenize(text):
     return tokens
 
 def build_model():
+    """
+    returns an instance of the pipeline containing text processing steps and model building steps
+    """
     pipeline = Pipeline([('features', FeatureUnion([
         ('text_pipe', Pipeline([
             ('vect', CountVectorizer(tokenizer=tokenize, binary=True,
@@ -67,12 +80,19 @@ def build_model():
     return pipeline
     
 def evaluate_model(model, X_test, Y_test, category_names):
+    """
+    evaluates model on the input predictors and target variables for each of the category names provided
+    (model, df, df, list of (str)) -> None
+    """
     y_pred = model.predict(X_test)
     for i in range(len(category_names)):
         print(category_names[i])
         print(classification_report(Y_test.iloc[:,i], y_pred[:,i]))
 
 def save_model(model, model_filepath):
+    """
+    saves model in model_filepath as a pickle file
+    """
     pickle.dump(model, open(model_filepath,'wb'))
 
 
