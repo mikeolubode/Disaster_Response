@@ -2,11 +2,26 @@ import sys
 import pandas as pd
 
 def load_data(messages_filepath, categories_filepath):
+    """
+    merges messages and categories into a single dataframe
+    inputs
+    ------
+    filepath of messages (str)
+    filepath of categories (str)
+    output
+    ------
+    dataframe containing messages and categories
+    """
     messages = pd.read_csv(messages_filepath)
     categories = pd.read_csv(categories_filepath)
     return messages.merge(categories, on='id', how='inner')
 
 def clean_data(df1):
+    """
+    split categories into columns of binary values indicating presence or absence of category
+    (df) -> df
+    
+    """
     df = df1.copy()
     categories = df.categories.str.split(';', expand = True)
     row = categories.iloc[0,:]
@@ -24,6 +39,10 @@ def clean_data(df1):
     return df
     
 def save_data(df, database_filename):
+    """
+    saves dataframe df into database, replaces table if already exists
+    return: None
+    """
     from sqlalchemy import create_engine
     engine = create_engine('sqlite:///{}'.format(database_filename))
     df.to_sql('disaster_df', engine, if_exists = 'replace', index=False)
