@@ -36,4 +36,4 @@ The project creates a web for disaster response in a time of crisis. It builds a
 
 4. Open a browser and visit the corresponding ip address and port
 
-#### PS: This project was completed as part of the requirement for my Udacity Data Scientist Nanodegree program
+#### PS: This project was completed as part of the requirements for my Udacity Data Scientist Nanodegree program
