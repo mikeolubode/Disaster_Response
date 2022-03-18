@@ -24,6 +24,9 @@ class count_unique_words(BaseEstimator, TransformerMixin):
         return self
 
     def transform(self, X):
+        """
+        counts the number of unique words in ea
+        """
         output = pd.Series(X).apply(lambda x: len(set(tokenize(x)))).values
         return output.reshape(-1,1)
 
