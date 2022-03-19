@@ -41,13 +41,13 @@ def tokenize(text):
         clean_tokens.append(clean_tok)
 
     return clean_tokens
-def getTopNwords(x, ngram_range=(1,1)):
+def TopWords(x, ngram=(1,1)):
     """
     given a pandas series x containing rows of strings,  function returns each word token based on the given
     n_gram range with stopwords removed
     (pd.series, tuple) -> df
     """
-    vec = CountVectorizer(ngram_range = ngram_range, stop_words="english").fit(x)
+    vec = CountVectorizer(ngram_range = ngram, stop_words="english").fit(x)
     bow = vec.transform(x)
     sumWords = bow.sum(axis = 0)
     wordFreq = [(word, sumWords[0, index]) for word, index in vec.vocabulary_.items()]
@@ -71,7 +71,7 @@ def index():
     # extract data needed for visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
-    single_word_df = getTopNwords(df.message.dropna(),ngram_range=(1,1)).head(10)
+    single_word_df = TopWords(df.message.dropna(),ngram=(1,1)).head(10)
     single_word = single_word_df.word
     single_freq = single_word_df.Frequency
     target = pd.melt(df.iloc[:,4:], var_name = 'Target', value_name="indicator")
